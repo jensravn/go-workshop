@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -30,16 +31,36 @@ func handlePostThing(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("err=%v", err)
 	}
-	log.Printf("%#v", thing)
+	dbPut(thing)
+}
+
+func dbPut(thing Thing) {
+	bytes, err := json.Marshal(thing)
+	if err != nil {
+		log.Printf("err=%v", err)
+	}
+	os.WriteFile("thing.json", bytes, 0644)
 }
 
 func handleGetThing(w http.ResponseWriter, r *http.Request) {
-	thing := Thing{
-		Msg: "hello",
-	}
+	thing := dbGet()
+
 	jsonThing, err := json.Marshal(thing)
 	if err != nil {
 		log.Printf("marshal err=%v", err)
 	}
 	w.Write(jsonThing)
+}
+
+func dbGet() *Thing {
+	bytes, err := os.ReadFile("thing.json")
+	if err != nil {
+		log.Printf("readFile err=%v", err)
+	}
+	var thing Thing
+	err = json.Unmarshal(bytes, &thing)
+	if err != nil {
+		log.Printf("unmarshal err=%v", err)
+	}
+	return &thing
 }
