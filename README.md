@@ -59,3 +59,27 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 ```
+
+## data type thing
+
+```go
+func main() {
+	http.HandleFunc("/thing", handleThing)
+	http.ListenAndServe(":8080", nil)
+}
+
+type Thing struct {
+	Msg string `json:"msg"`
+}
+
+func handleThing(w http.ResponseWriter, r *http.Request) {
+	thing := Thing{
+		Msg: "hello",
+	}
+	jsonThing, err := json.Marshal(thing)
+	if err != nil {
+		log.Printf("Could not marshal thing to json, err=%v", err)
+	}
+	w.Write(jsonThing)
+}
+```
