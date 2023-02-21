@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", hello)
+	http.HandleFunc("/", handleThing)
 	http.ListenAndServe("localhost:8080", nil)
 }
 
@@ -15,7 +15,25 @@ type Thing struct {
 	Msg string `json:"msg"`
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func handleThing(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		handleGetThing(w, r)
+	}
+	if r.Method == "POST" {
+		handlePostThing(w, r)
+	}
+}
+
+func handlePostThing(w http.ResponseWriter, r *http.Request) {
+	var thing Thing                               // Declare
+	err := json.NewDecoder(r.Body).Decode(&thing) // Assign value
+	if err != nil {
+		log.Printf("err=%v", err)
+	}
+	log.Printf("%#v", thing)
+}
+
+func handleGetThing(w http.ResponseWriter, r *http.Request) {
 	thing := Thing{
 		Msg: "hello",
 	}

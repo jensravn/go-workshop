@@ -83,3 +83,49 @@ func handleThing(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonThing)
 }
 ```
+
+## post
+
+```go
+func main() {
+	http.HandleFunc("/thing", handleThing)
+	http.ListenAndServe(":8080", nil)
+}
+
+type Thing struct {
+	Msg string `json:"msg"`
+}
+
+func handleThing(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		getThing(w, r)
+		return
+	}
+	if r.Method == "POST" {
+		postThing(w, r)
+		return
+	}
+	log.Printf("Error: /thing method '%s' not allowed", r.Method)
+	http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+}
+
+func getThing(w http.ResponseWriter, r *http.Request) {
+	thing := Thing{
+		Msg: "hello",
+	}
+	jsonThing, err := json.Marshal(thing)
+	if err != nil {
+		log.Printf("Could not marshal data to json, err=%v", err)
+	}
+	w.Write(jsonThing)
+}
+
+func postThing(w http.ResponseWriter, r *http.Request) {
+	var t Thing
+	err := json.NewDecoder(r.Body).Decode(&t)
+	if err != nil {
+		log.Printf("r.Body could not be decoded into Thing struct, err=%v", err)
+	}
+	log.Printf("%#v", t)
+}
+```
