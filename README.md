@@ -27,3 +27,16 @@ func hello() {
 ## go mod init
 
 `go mod init github.com/USERNAME/go-workshop`
+
+## hello server
+
+```go
+func main() {
+	http.HandleFunc("/", hello)
+	http.ListenAndServe(":8080", nil)
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("hello"))
+}
+```
