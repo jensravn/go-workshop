@@ -23,3 +23,7 @@ func hello() {
 	fmt.Println("hello")
 }
 ```
+
+## go mod init
+
+`go mod init github.com/USERNAME/go-workshop`
