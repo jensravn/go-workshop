@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -10,5 +12,11 @@ func main() {
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello"))
+	data := map[string]interface{}{}
+	data["msg"] = "hello"
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		log.Printf("marshal err=%v", err)
+	}
+	w.Write(jsonData)
 }

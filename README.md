@@ -40,3 +40,22 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("hello"))
 }
 ```
+
+## json
+
+```go
+func main() {
+	http.HandleFunc("/", hello)
+	http.ListenAndServe(":8080", nil)
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{}
+	data["msg"] = "hello"
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		log.Printf("Could not marshal data to json, err=%v", err)
+	}
+	w.Write(jsonData)
+}
+```
