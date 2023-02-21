@@ -13,3 +13,13 @@ func main() {
 	fmt.Println("hello")
 }
 ```
+
+run hello program: `go run main.go`
+
+## hello function
+
+```go
+func hello() {
+	fmt.Println("hello")
+}
+```

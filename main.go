@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
+	hello()
+}
+
+func hello() {
 	fmt.Print("hello")
 }
