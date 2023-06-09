@@ -10,6 +10,18 @@
 
 ### print hello
 
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello world")
+}
+```
+
+`go run main.go`
+
 ### hello function
 
 ### go mod init
