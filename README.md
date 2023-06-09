@@ -36,6 +36,10 @@ func hello() {
 
 ### go mod init
 
+`go mod init github.com/jensravn/go-workshop`
+
+`go run .`
+
 ### hello server
 
 ### get json
