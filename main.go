@@ -2,40 +2,46 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
+	"os"
 )
 
 type thing struct {
 	Message string `json:"message"`
 }
 
+const thingTXT = "thing.txt"
+
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			t := thing{
-				Message: "Hello world",
-			}
-			s, err := json.Marshal(&t)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			b := []byte(s)
-			w.Write(b)
-			return
-		}
-		if r.Method == http.MethodPut {
-			var t thing
-			err := json.NewDecoder(r.Body).Decode(&t)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			log.Printf("got thing: %#v", t)
-			return
-		}
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-	})
+	http.HandleFunc("/", handleIndex)
 	http.ListenAndServe(":8080", nil)
+}
+
+func handleIndex(w http.ResponseWriter, r *http.Request) {
+	var t thing
+	if r.Method == http.MethodGet {
+		b, err := os.ReadFile(thingTXT)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(b)
+		return
+	}
+	if r.Method == http.MethodPut {
+		err := json.NewDecoder(r.Body).Decode(&t)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		s, err := json.Marshal(&t)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		b := []byte(s)
+		os.WriteFile(thingTXT, b, 0644)
+		return
+	}
+	http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 }
