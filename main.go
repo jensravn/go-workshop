@@ -5,10 +5,16 @@ import (
 	"net/http"
 )
 
+type thing struct {
+	Message string `json:"message"`
+}
+
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		j := map[string]any{"message": "Hello world"}
-		s, err := json.Marshal(&j)
+		t := thing{
+			Message: "Hello world",
+		}
+		s, err := json.Marshal(&t)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
