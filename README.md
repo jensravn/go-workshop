@@ -42,6 +42,16 @@ func hello() {
 
 ### hello server
 
+```go
+func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		b := []byte("Hello world")
+		w.Write(b)
+	})
+	http.ListenAndServe(":8080", nil)
+}
+```
+
 ### get json
 
 ### get data type thing
