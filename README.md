@@ -24,6 +24,16 @@ func main() {
 
 ### hello function
 
+```go
+func main() {
+	hello()
+}
+
+func hello() {
+	fmt.Println("Hello world")
+}
+```
+
 ### go mod init
 
 ### hello server
