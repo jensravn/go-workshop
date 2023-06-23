@@ -9,12 +9,16 @@ import (
 
 func Test_handleIndex(t *testing.T) {
 
+	// setup
+	s := server{}
+	s.routes()
+
 	// given
 	w := httptest.NewRecorder()
-	r := httptest.NewRequest("GET", "/", strings.NewReader(``))
+	r := httptest.NewRequest("GET", "/thing", strings.NewReader(``))
 
 	// when
-	handleGet(w, r)
+	s.r.ServeHTTP(w, r)
 
 	// then
 	res := w.Result()
