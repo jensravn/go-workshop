@@ -282,6 +282,35 @@ func (s *server) handlePut(w http.ResponseWriter, r *http.Request) {
 
 ### dbFile
 
+```go
+type dbFile struct{}
+
+func (db *dbFile) Get() (*thing, error) {
+	b, err := os.ReadFile(thingTXT)
+	if err != nil {
+		return nil, fmt.Errorf("read file: %w", err)
+	}
+	var t thing
+	err = json.NewDecoder(bytes.NewReader(b)).Decode(&t)
+	if err != nil {
+		return nil, fmt.Errorf("json decode: %w", err)
+	}
+	return &t, nil
+}
+
+func (db *dbFile) Put(t *thing) error {
+	b, err := json.Marshal(&t)
+	if err != nil {
+		return fmt.Errorf("json marshal: %w", err)
+	}
+	os.WriteFile(thingTXT, b, 0644)
+	if err != nil {
+		return fmt.Errorf("write file: %w", err)
+	}
+	return nil
+}
+```
+
 ### thing interface
 
 ### test thing

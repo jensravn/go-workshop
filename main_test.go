@@ -10,7 +10,9 @@ import (
 func Test_handleIndex(t *testing.T) {
 
 	// setup
-	s := server{}
+	s := server{
+		db: &dbFile{},
+	}
 	s.routes()
 
 	// given
