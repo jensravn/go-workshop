@@ -22,7 +22,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		b, err := os.ReadFile(thingTXT)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
 		w.Write(b)
