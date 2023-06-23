@@ -14,7 +14,7 @@ func Test_handleIndex(t *testing.T) {
 	r := httptest.NewRequest("GET", "/", strings.NewReader(``))
 
 	// when
-	handleIndex(w, r)
+	handleGet(w, r)
 
 	// then
 	res := w.Result()
