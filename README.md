@@ -311,6 +311,13 @@ func (db *dbFile) Put(t *thing) error {
 }
 ```
 
-### thing interface
+### db interface
+
+```go
+type db interface {
+	Get() (*thing, error)
+	Put(*thing) error
+}
+```
 
 ### test thing

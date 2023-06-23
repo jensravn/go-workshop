@@ -26,7 +26,7 @@ func main() {
 
 type server struct {
 	r  *chi.Mux
-	db *dbFile
+	db db
 }
 
 func (s *server) routes() {
@@ -62,6 +62,11 @@ func (s *server) handlePut(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+type db interface {
+	Get() (*thing, error)
+	Put(*thing) error
 }
 
 type dbFile struct{}
