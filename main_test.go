@@ -11,7 +11,7 @@ func Test_handleIndex(t *testing.T) {
 
 	// setup
 	s := server{
-		db: &dbFile{},
+		db: &dbMock{},
 	}
 	s.routes()
 
@@ -37,4 +37,14 @@ func Test_handleIndex(t *testing.T) {
 	if got != want {
 		t.Fatalf("body got=%s, want %s", got, want)
 	}
+}
+
+type dbMock struct{}
+
+func (db *dbMock) Get() (*thing, error) {
+	return &thing{Message: "test message"}, nil
+}
+
+func (db *dbMock) Put(t *thing) error {
+	panic("Not implemented")
 }

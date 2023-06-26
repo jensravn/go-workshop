@@ -320,4 +320,16 @@ type db interface {
 }
 ```
 
-### test thing
+### dbMock
+
+```go
+type dbMock struct{}
+
+func (db *dbMock) Get() (*thing, error) {
+	return &thing{Message: "test message"}, nil
+}
+
+func (db *dbMock) Put(t *thing) error {
+	panic("Not implemented")
+}
+```
